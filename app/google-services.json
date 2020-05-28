@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "359707021864",
+    "firebase_url": "https://map2saveme.firebaseio.com",
+    "project_id": "map2saveme",
+    "storage_bucket": "map2saveme.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359707021864:android:b2d26ea92936afa001db1d",
+        "android_client_info": {
+          "package_name": "com.dimar.map2saveme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "359707021864-tpqvh6n1nju4dubo8arhhnsit47phn3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHbByH75ybNmf_Cijt1jxP30pG7irL9u0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "359707021864-tpqvh6n1nju4dubo8arhhnsit47phn3d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
