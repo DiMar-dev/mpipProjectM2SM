@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.dimar.map2saveme.models.GuestPom;
 import com.dimar.map2saveme.models.User;
+import com.dimar.map2saveme.repository.Repository;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -25,14 +26,14 @@ public class MainActivity extends AppCompatActivity {
     Button dataBt;
 //    Date date;
 
-    private DatabaseReference mDatabase;
+    private Repository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        repository=new Repository();
 
         name=findViewById(R.id.Name);
         surnme=findViewById(R.id.surname);
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         //String id=mDatabase.push().getKey();
 
-        mDatabase.child(baseId).setValue(pom);
+        repository.save(pom);
 
         Intent intent=new Intent(this,Map_Pic.class);
         startActivity(intent);

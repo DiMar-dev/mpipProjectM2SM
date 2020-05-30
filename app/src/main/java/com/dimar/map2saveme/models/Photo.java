@@ -32,6 +32,9 @@ public class Photo {
         this.localDateTime=LocalDateTime.now();
     }
 
+    public Photo() {
+    }
+
     public String getImageID() {
         return imageID;
     }
@@ -58,5 +61,33 @@ public class Photo {
 
     public String getAndimalID() {
         return andimalID;
+    }
+
+    public void setImageID(String imageID) {
+        this.imageID = imageID;
+    }
+
+    public void setImageBase64(String imageBase64) {
+        this.imageBase64 = imageBase64;
+    }
+
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
+    }
+
+    public void setLtd(Double ltd) {
+        this.ltd = ltd;
+    }
+
+    public void setPhotographerID(String photographerID) {
+        this.photographerID = photographerID;
+    }
+
+    public void setAndimalID(String andimalID) {
+        this.andimalID = andimalID;
     }
 }
