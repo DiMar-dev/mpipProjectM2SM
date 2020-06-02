@@ -13,16 +13,16 @@ public class FirebaseQueryLiveData extends LiveData<List<DataSnapshot>> {
 
     private final Query query;
     private final MyValueEventListener listener = new MyValueEventListener();
-//
-//    private boolean listenerRemovePending = false;
-//    private final Handler handler = new Handler();
-//    private final Runnable removeListener = new Runnable() {
-//        @Override
-//        public void run() {
-//            query.removeEventListener(listener);
-//            listenerRemovePending = false;
-//        }
-//    };
+
+    private boolean listenerRemovePending = false;
+    private final Handler handler = new Handler();
+    private final Runnable removeListener = new Runnable() {
+        @Override
+        public void run() {
+            query.removeEventListener(listener);
+            listenerRemovePending = false;
+        }
+    };
 
     public FirebaseQueryLiveData(Query query) {
         this.query = query;
@@ -35,13 +35,24 @@ public class FirebaseQueryLiveData extends LiveData<List<DataSnapshot>> {
     @Override
     protected void onActive() {
         Log.d(LOG_TAG, "onActive");
-        query.addValueEventListener(listener);
+//        query.addValueEventListener(listener);
+        if (listenerRemovePending) {
+            Log.d(LOG_TAG, "onActiveRemove");
+            handler.removeCallbacks(removeListener);
+        }
+        else {
+            query.addValueEventListener(listener);
+        }
+        listenerRemovePending = false;
     }
 
     @Override
     protected void onInactive() {
         Log.d(LOG_TAG, "onInactive");
-        query.removeEventListener(listener);
+//        query.removeEventListener(listener);
+        // Listener removal is schedule on a two second delay
+        handler.postDelayed(removeListener, 2000);
+        listenerRemovePending = true;
     }
 
     private class MyValueEventListener implements ValueEventListener {
@@ -49,7 +60,9 @@ public class FirebaseQueryLiveData extends LiveData<List<DataSnapshot>> {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
             for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+              //  dataSnapshots.add(postSnapshot.getValue(Photo.class));
                 dataSnapshots.add(postSnapshot);
+
             }
             setValue(dataSnapshots);
 

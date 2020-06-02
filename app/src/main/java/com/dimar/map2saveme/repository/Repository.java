@@ -9,6 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Repository {
 
     private static DatabaseReference databaseReference=null;
+    private static String photoKey;
 
     public Repository() {
         if(databaseReference==null){
@@ -21,8 +22,7 @@ public class Repository {
         databaseReference.child("animals").child(animal.getNameId()).setValue(animal);
     }
     public void save(Photo photo){
-        String id=databaseReference.child("photos").push().getKey();
-        databaseReference.child("photos").child(id).setValue(photo);
+        databaseReference.child("photos").child(photo.getImageID()).setValue(photo);
     }
     public void save(User user){
         databaseReference.child("users").child(user.getUserId()).setValue(user);
@@ -30,5 +30,10 @@ public class Repository {
 
     public static DatabaseReference getDatabaseReference() {
         return databaseReference;
+    }
+
+    public static String getPhotoKey() {
+        photoKey=databaseReference.child("photos").push().getKey();
+        return photoKey;
     }
 }

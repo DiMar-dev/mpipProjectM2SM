@@ -64,15 +64,12 @@ public class MainActivity extends AppCompatActivity {
         String baseName=name.getText().toString().trim();
         String baseSurname=surnme.getText().toString().trim();
         String baseId=idName.getText().toString().trim();
-        HashMap<String,Boolean> ids =new HashMap<>();
-        ids.put("Marin",true);
-        ids.put("Hari",true);
 
-        User pom=new User(baseId,baseName,baseSurname,"070307348","pom@email.com",true);
 
-        //String id=mDatabase.push().getKey();
-
-        repository.save(pom);
+        if(baseId!="" && baseId!=null){
+            User pom = new User(baseId, baseName, baseSurname, "070307348", "pom@email.com", true);
+            repository.save(pom);
+        }
 
         Intent intent=new Intent(this,Map_Pic.class);
         startActivity(intent);

@@ -1,5 +1,6 @@
 package com.dimar.map2saveme;
 
+import android.os.AsyncTask;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dimar.map2saveme.adapters.CustomListAdapter;
 import com.dimar.map2saveme.models.Photo;
 import com.dimar.map2saveme.viewModel.FindListViewModel;
+import com.google.firebase.database.DataSnapshot;
 
 import java.util.List;
 import java.util.Locale;
@@ -32,6 +34,8 @@ public class FindList extends AppCompatActivity {
 
     }
 
+    //mnogu vreme i da se zacuva da ne se loadira na sekoe
+    // proverka na broj na povici najverojatno dupliranje List<DataSnapshot>
     public void initData() {
         FindListViewModel findListViewModel=new ViewModelProvider(this).get(FindListViewModel.class);
         LiveData<List<Photo>> photoLiveData=findListViewModel.getDataSnapshotLiveData();

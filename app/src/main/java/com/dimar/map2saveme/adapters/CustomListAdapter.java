@@ -34,7 +34,7 @@ public class CustomListAdapter extends RecyclerView.Adapter {
         sb.append(" ");
         sb.append(dataset.get(position).getPhotographerID());
         sb.append(" ");
-        sb.append(dataset.get(position).getDate().toString());
+        sb.append(dataset.get(position).getDate());
         ((CustomListViewHolder)holder).setText(sb.toString());
     }
 
@@ -43,7 +43,9 @@ public class CustomListAdapter extends RecyclerView.Adapter {
         return dataset.size();
     }
 
+    //treba izmena..izmenite da se menuvaat vo dataset a ne da se dodavaat so istoID
     public void updateDataset(List<Photo> newDataset) {
+        dataset.clear();
         dataset.addAll(newDataset);
         notifyDataSetChanged();
     }
