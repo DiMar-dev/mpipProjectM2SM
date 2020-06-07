@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         String baseId=idName.getText().toString().trim();
 
 
-        if(baseId!="" && baseId!=null){
+        if(!baseId.isEmpty()){
             User pom = new User(baseId, baseName, baseSurname, "070307348", "pom@email.com", true);
             repository.save(pom);
         }

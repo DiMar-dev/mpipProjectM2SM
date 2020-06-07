@@ -40,9 +40,11 @@ public class FindList extends AppCompatActivity {
         FindListViewModel findListViewModel=new ViewModelProvider(this).get(FindListViewModel.class);
         LiveData<List<Photo>> photoLiveData=findListViewModel.getDataSnapshotLiveData();
 
+
+
         photoLiveData.observe(this,data -> {
             if(data!=null){
-                adapter.updateDataset(data);
+                adapter.updateDataset(data.get(0));
             }
         });
     }

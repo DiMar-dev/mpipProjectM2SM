@@ -5,36 +5,44 @@
                                                    android:layout_height="200dp" android:id="@+id/linearLayout">
 
     <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout_editor_absoluteY="1dp"
-            tools:layout_editor_absoluteX="-16dp"
-            app:cardCornerRadius="18dp" android:id="@+id/cardView">
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardBackgroundColor="#8DAED3"
+        app:cardCornerRadius="18dp"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="1dp">
 
         <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginStart="0dp"
+            android:id="@+id/imageViewFind"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="40dp"
 
-                tools:srcCompat="@tools:sample/backgrounds/scenic"
-                android:id="@+id/imageViewFind"/>
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewFind"
-                android:layout_marginTop="160dp"
-                android:id="@+id/constraintFind">
+            android:id="@+id/constraintFind"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="160dp"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewFind">
 
             <TextView
-                    android:text="TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/textViewFind"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="8dp" app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="16dp" app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintVertical_bias="0.23"/>
+                android:id="@+id/textViewFind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.23" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

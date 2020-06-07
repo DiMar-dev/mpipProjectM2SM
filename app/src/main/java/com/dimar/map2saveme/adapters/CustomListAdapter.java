@@ -1,5 +1,6 @@
 package com.dimar.map2saveme.adapters;
 
+import android.graphics.Region;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import com.dimar.map2saveme.models.Photo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CustomListAdapter extends RecyclerView.Adapter {
     List<Photo> dataset;
@@ -33,20 +35,30 @@ public class CustomListAdapter extends RecyclerView.Adapter {
         sb.append(dataset.get(position).getAndimalID());
         sb.append(" ");
         sb.append(dataset.get(position).getPhotographerID());
-        sb.append(" ");
-        sb.append(dataset.get(position).getDate());
-        ((CustomListViewHolder)holder).setText(sb.toString());
+        ((CustomListViewHolder)holder).setText(sb.toString(),
+                                                dataset.get(position).getImageBase64(),
+                                                dataset.get(position).getDate());
     }
 
     @Override
-    public int getItemCount() {
+    synchronized public int getItemCount() {
         return dataset.size();
     }
 
-    //treba izmena..izmenite da se menuvaat vo dataset a ne da se dodavaat so istoID
-    public void updateDataset(List<Photo> newDataset) {
-        dataset.clear();
-        dataset.addAll(newDataset);
+    //Firebase RealTime Database OFFLINE
+    public void updateDataset(Photo newDataset) {
+
+        Photo result=dataset.stream().filter(photo -> photo.getImageID().contains(newDataset.getImageID()))
+                .findFirst().orElse(null);
+        if(result==null){
+            dataset.add(newDataset);
+        }else{
+            if(newDataset.getImageBase64().equals("DELETED")){
+                dataset.remove(dataset.indexOf(result));
+            }else {
+                dataset.set(dataset.indexOf(result),newDataset);
+            }
+        }
         notifyDataSetChanged();
     }
 }

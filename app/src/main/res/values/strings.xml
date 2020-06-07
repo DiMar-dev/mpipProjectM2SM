@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Map2SaveMe</string>
+    <string name="title_location_permission">Location permission</string>
+    <string name="ok">ok</string>
+    <string name="text_location_permission">For successful mapping please enable your location.</string>
 </resources>

@@ -19,29 +19,29 @@ public class FindListViewModel extends ViewModel {
 
     private final FirebaseQueryLiveData liveData = new FirebaseQueryLiveData(Repository.getDatabaseReference());
 
-    private final LiveData<List<Photo>> photoLiveData =
-            Transformations.map(liveData, new Deserializer());
-
-    private class Deserializer implements Function<List<DataSnapshot>, List<Photo>> {
-        List<Photo> photoAsync=new ArrayList<>();
-
-        @Override
-        public List<Photo> apply(List<DataSnapshot> dataSnapshot) {
-            new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    dataSnapshot.stream().forEach(m->photoAsync.add(m.getValue(Photo.class)));
-                   // photoAsync.add(dataSnapshot.getValue(Photo.class));
-
-                    return null;
-                }
-            }.execute();
-            return photoAsync;
-        }
-    }
+//    private final LiveData<List<Photo>> photoLiveData =
+//            Transformations.map(liveData, new Deserializer());
+//
+//    private class Deserializer implements Function<List<DataSnapshot>, List<Photo>> {
+//        List<Photo> photoAsync=new ArrayList<>();
+//
+//
+//        @Override
+//        public List<Photo> apply(List<DataSnapshot> dataSnapshot) {
+//            new AsyncTask<Void, Void, Void>() {
+//                @Override
+//                protected Void doInBackground(Void... voids) {
+//                    dataSnapshot.stream().forEach(m->photoAsync.add(m.getValue(Photo.class)));
+//
+//                    return null;
+//                }
+//            }.execute();
+//            return photoAsync;
+//        }
+//    }
 
     @NonNull
     public LiveData<List<Photo>> getDataSnapshotLiveData() {
-        return photoLiveData;
+        return liveData;
     }
 }

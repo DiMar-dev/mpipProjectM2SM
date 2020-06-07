@@ -3,6 +3,11 @@
           package="com.dimar.map2saveme">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-feature android:name="android.hardware.camera2"
+                    android:required="true"/>
 
     <application
             android:allowBackup="true"

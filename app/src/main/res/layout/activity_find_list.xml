@@ -13,9 +13,13 @@
             android:theme="?attr/actionBarTheme"
             android:minHeight="?attr/actionBarSize" tools:layout_editor_absoluteY="0dp"
             tools:layout_editor_absoluteX="0dp" android:id="@+id/toolbarFind"/>
+
     <androidx.recyclerview.widget.RecyclerView
-            android:scrollbars="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" tools:layout_editor_absoluteY="173dp"
-            tools:layout_editor_absoluteX="32dp" android:id="@+id/recylerView_photos"/>
+        android:id="@+id/recylerView_photos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000066"
+        android:scrollbars="vertical"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="173dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
