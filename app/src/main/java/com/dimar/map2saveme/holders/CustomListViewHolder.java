@@ -7,13 +7,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.dimar.map2saveme.R;
+import com.dimar.map2saveme.adapters.CustomListAdapter;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
-public class CustomListViewHolder extends RecyclerView.ViewHolder {
+public class CustomListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     ImageView imageView;
     TextView textView;
@@ -23,6 +24,8 @@ public class CustomListViewHolder extends RecyclerView.ViewHolder {
 
         imageView=view.findViewById(R.id.imageViewFind);
         textView=view.findViewById(R.id.textViewFind);
+
+        view.setOnClickListener(this);
     }
     public void setText(String text,String base64string,long date) {
 
@@ -37,5 +40,10 @@ public class CustomListViewHolder extends RecyclerView.ViewHolder {
         imageView.setImageBitmap(BitmapFactory.decodeByteArray(data,0,data.length));
         textView.setText(textToShow);
 //        itemView.setOnClickListener(listener);
+    }
+
+    @Override
+    public void onClick(View view) {
+        CustomListAdapter.getItemListener().recyclerViewListClicked(view,getLayoutPosition());
     }
 }

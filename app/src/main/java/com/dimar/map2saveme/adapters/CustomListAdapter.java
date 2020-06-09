@@ -1,5 +1,6 @@
 package com.dimar.map2saveme.adapters;
 
+import android.content.Context;
 import android.graphics.Region;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.dimar.map2saveme.R;
+import com.dimar.map2saveme.clickListener.RecyclerViewClickListener;
 import com.dimar.map2saveme.holders.CustomListViewHolder;
 import com.dimar.map2saveme.models.Photo;
 
@@ -15,10 +17,18 @@ import java.util.List;
 import java.util.Optional;
 
 public class CustomListAdapter extends RecyclerView.Adapter {
+
     List<Photo> dataset;
 
-    public CustomListAdapter() {
+    private Context context;
+    private static RecyclerViewClickListener itemListener;
+
+
+    public CustomListAdapter(Context context, RecyclerViewClickListener clickListener) {
         this.dataset = new ArrayList<>();
+
+        this.context = context;
+        this.itemListener = clickListener;
     }
 
     @NonNull
@@ -45,8 +55,8 @@ public class CustomListAdapter extends RecyclerView.Adapter {
         return dataset.size();
     }
 
-    //Firebase RealTime Database OFFLINE
-    public void updateDataset(Photo newDataset) {
+    //Firebase RealTime Database OFFLINE???
+    synchronized public void updateDataset(Photo newDataset) {
 
         Photo result=dataset.stream().filter(photo -> photo.getImageID().contains(newDataset.getImageID()))
                 .findFirst().orElse(null);
@@ -60,5 +70,13 @@ public class CustomListAdapter extends RecyclerView.Adapter {
             }
         }
         notifyDataSetChanged();
+    }
+
+    public static RecyclerViewClickListener getItemListener() {
+        return itemListener;
+    }
+
+    public List<Photo> getDataset() {
+        return dataset;
     }
 }

@@ -31,8 +31,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
 
-// Rzgleduvanje na kod smallPhoto
 //request for permision proba detalna so fail UI/UX resenie
+// posle submit redirect na findlist
 public class Map_Pic extends AppCompatActivity {
 
     TextView labelPhotograph;
@@ -99,6 +99,7 @@ public class Map_Pic extends AppCompatActivity {
                     // functionality that depends on this permission.
                     labelPhotograph.setText("Location not allowe ERROR");
                     photographID.setText("please allow location for this aplication");
+                    addPhoto.setOnClickListener(null);
 
                 }
                 return;

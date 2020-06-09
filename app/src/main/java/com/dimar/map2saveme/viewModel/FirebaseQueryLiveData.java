@@ -18,6 +18,8 @@ public class FirebaseQueryLiveData extends LiveData<List<Photo>> {
     private final MyValueEventListener listener = new MyValueEventListener();
     private final MyChildEventListener childListener = new MyChildEventListener();
 
+    // se koristi za namaluvanje na nepotrebni povici pri rotacija
+    // ama koga ima rotacija so fragment se loadira samo poslednoto bidej'i datasetot se brise
     private boolean listenerRemovePending = false;
     private final Handler handler = new Handler();
     private final Runnable removeListener = new Runnable() {
@@ -39,16 +41,18 @@ public class FirebaseQueryLiveData extends LiveData<List<Photo>> {
     @Override
     protected void onActive() {
         Log.d(LOG_TAG, "onActive");
-//        query.addValueEventListener(listener);
-        if (listenerRemovePending) {
-            Log.d(LOG_TAG, "onActiveRemove");
-            handler.removeCallbacks(removeListener);
-        }
-        else {
-//            query.addValueEventListener(listener);
-            query.addChildEventListener(childListener);
-        }
-        listenerRemovePending = false;
+////        query.addValueEventListener(listener);
+//        if (listenerRemovePending) {
+//            Log.d(LOG_TAG, "onActiveRemove");
+//            handler.removeCallbacks(removeListener);
+//        }
+//        else {
+////            query.addValueEventListener(listener);
+//            query.addChildEventListener(childListener);
+//        }
+//        listenerRemovePending = false;
+        query.addChildEventListener(childListener);
+
     }
 
     @Override
@@ -56,13 +60,14 @@ public class FirebaseQueryLiveData extends LiveData<List<Photo>> {
         Log.d(LOG_TAG, "onInactive");
 //        query.removeEventListener(listener);
         // Listener removal is schedule on a two second delay
-        handler.postDelayed(removeListener, 2000);
-        listenerRemovePending = true;
+//        handler.postDelayed(removeListener, 2000);
+//        listenerRemovePending = true;
+        query.removeEventListener(childListener);
     }
 
 
 
-
+//  na sekoja promena loadira cela lista site predh + novo
     private class MyValueEventListener implements ValueEventListener {
         List<DataSnapshot> dataSnapshots=new ArrayList<>();
         @Override

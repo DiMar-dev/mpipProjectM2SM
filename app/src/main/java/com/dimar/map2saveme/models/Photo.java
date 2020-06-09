@@ -1,5 +1,7 @@
 package com.dimar.map2saveme.models;
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -92,5 +94,11 @@ public class Photo {
 
     public void setAndimalID(String andimalID) {
         this.andimalID = andimalID;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return imageID+","+imageBase64+","+photographerID+","+andimalID+","+lng+","+ltd+","+date;
     }
 }

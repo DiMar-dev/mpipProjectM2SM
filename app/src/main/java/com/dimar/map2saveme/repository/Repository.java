@@ -13,6 +13,7 @@ public class Repository {
 
     public Repository() {
         if(databaseReference==null){
+            //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
             databaseReference = FirebaseDatabase.getInstance().getReference();
         }
     }
