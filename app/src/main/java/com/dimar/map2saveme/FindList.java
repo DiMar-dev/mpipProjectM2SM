@@ -1,6 +1,8 @@
 package com.dimar.map2saveme;
 
 import android.os.AsyncTask;
+import android.view.Menu;
+import android.view.MenuItem;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dimar.map2saveme.adapters.CustomListAdapter;
 import com.dimar.map2saveme.fragments.FindListFragment;
 import com.dimar.map2saveme.models.Photo;
+import com.dimar.map2saveme.optionMenu.OptionsMenuActivity;
 import com.dimar.map2saveme.viewModel.FindListViewModel;
 import com.google.firebase.database.DataSnapshot;
 
@@ -24,14 +27,12 @@ import java.util.Locale;
 
 public class FindList extends AppCompatActivity {
 
+    Toolbar mytoolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_find_list);
-
     }
-
-
 
 }

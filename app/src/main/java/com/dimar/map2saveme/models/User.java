@@ -29,6 +29,9 @@ public class User {
         this.adoptHelper = adoptHelper;
     }
 
+    public User() {
+    }
+
     public String getUserId() {
         return userId;
     }

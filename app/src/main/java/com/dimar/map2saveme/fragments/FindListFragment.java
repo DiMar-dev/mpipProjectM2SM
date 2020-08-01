@@ -1,14 +1,18 @@
 package com.dimar.map2saveme.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.view.*;
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -17,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.dimar.map2saveme.DetailsActivity;
+import com.dimar.map2saveme.MainActivity;
 import com.dimar.map2saveme.R;
 import com.dimar.map2saveme.adapters.CustomListAdapter;
 import com.dimar.map2saveme.clickListener.RecyclerViewClickListener;
@@ -34,6 +39,8 @@ public class FindListFragment extends Fragment implements RecyclerViewClickListe
     CustomListAdapter adapter;
     FindListViewModel findListViewModel;
 
+    Toolbar mytoolbar;
+
     public FindListFragment() {
         // Required empty public constructor
     }
@@ -41,12 +48,30 @@ public class FindListFragment extends Fragment implements RecyclerViewClickListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        OnBackPressedCallback callback=new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                startActivity(new Intent(getActivity(), MainActivity.class));
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this,callback);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView=inflater.inflate(R.layout.activity_find_list, container, false);
+
+        mytoolbar= rootView.findViewById(R.id.toolbar2);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(mytoolbar);
 
         initListView(rootView);
         initData();
@@ -77,6 +102,35 @@ public class FindListFragment extends Fragment implements RecyclerViewClickListe
         super.onSaveInstanceState(outState);
         outState.putInt("curChoice", curCheckPosition);
     }
+
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.appbar_menu,menu);
+        menu.findItem(R.id.menu_item3).setVisible(true);
+        menu.findItem(R.id.menu_item2).setVisible(false);
+        menu.findItem(R.id.menu_item1).setVisible(false);
+
+        SearchView searchView= (SearchView) menu.findItem(R.id.menu_item3).getActionView();
+        searchView.setOnQueryTextListener(getOnQueryTextListener());
+    }
+
+    private SearchView.OnQueryTextListener getOnQueryTextListener() {
+        return new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        };
+    }
+
 
     void showDetails(int index) {
         curCheckPosition = index;

@@ -1,10 +1,12 @@
 package com.dimar.map2saveme.repository;
 
+import androidx.annotation.NonNull;
+import com.dimar.map2saveme.firebaseAuth.FirebaseCallback;
 import com.dimar.map2saveme.models.Animal;
 import com.dimar.map2saveme.models.Photo;
 import com.dimar.map2saveme.models.User;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.*;
 
 public class Repository {
 
@@ -36,5 +38,24 @@ public class Repository {
     public static String getPhotoKey() {
         photoKey=databaseReference.child("photos").push().getKey();
         return photoKey;
+    }
+
+    public void findUser(FirebaseCallback firebaseCallback,String id){
+         databaseReference.child("users").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    firebaseCallback.onCallback(dataSnapshot.getValue(User.class));
+                }else{
+                    firebaseCallback.onCallback(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+        });
     }
 }

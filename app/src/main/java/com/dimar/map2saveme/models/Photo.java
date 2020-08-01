@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.Objects;
 
 
 public class Photo {
@@ -100,5 +101,19 @@ public class Photo {
     @Override
     public String toString() {
         return imageID+","+imageBase64+","+photographerID+","+andimalID+","+lng+","+ltd+","+date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Photo photo = (Photo) o;
+        return imageID.equals(photo.imageID) &&
+                imageBase64.equals(photo.imageBase64);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(imageID, imageBase64);
     }
 }

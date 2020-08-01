@@ -26,6 +26,8 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -33,6 +35,7 @@ import java.io.ByteArrayOutputStream;
 
 //request for permision proba detalna so fail UI/UX resenie
 // posle submit redirect na findlist
+//user se seam od firebase a na po baza
 public class Map_Pic extends AppCompatActivity {
 
     TextView labelPhotograph;
@@ -49,6 +52,9 @@ public class Map_Pic extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
+    FirebaseAuth auth;
+    FirebaseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +62,8 @@ public class Map_Pic extends AppCompatActivity {
 
         repository=new Repository();
         initView();
+
+        auth=FirebaseAuth.getInstance();
 
        checkLocationPermission();
 
@@ -75,6 +83,7 @@ public class Map_Pic extends AppCompatActivity {
                 public void onClick(View view) {
                     assert imageBitmap != null;
                     savePhotoAnimal(imageBitmap);
+                    startActivity(new Intent(getApplicationContext(),FindList.class));
                 }
 
             });
@@ -97,7 +106,7 @@ public class Map_Pic extends AppCompatActivity {
 
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                    labelPhotograph.setText("Location not allowe ERROR");
+                    labelPhotograph.setText("Location not allowed ERROR");
                     photographID.setText("please allow location for this aplication");
                     addPhoto.setOnClickListener(null);
 
@@ -118,7 +127,7 @@ public class Map_Pic extends AppCompatActivity {
     //dozvoleno e i dokolku se prazni tekct polinjata
     private void savePhotoAnimal(Bitmap bitmap){
 
-        String photograper=photographID.getText().toString().trim();
+        //String photograper=photographID.getText().toString().trim();
         String animal=animalID.getText().toString().trim();
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -133,8 +142,10 @@ public class Map_Pic extends AppCompatActivity {
 
                 if(location!=null) {
 
+                    user=auth.getCurrentUser();
+
                     String key=Repository.getPhotoKey();
-                    Photo photo=new Photo(key,encodedBase64,location.getLongitude(),location.getLatitude(),photograper,animal);
+                    Photo photo=new Photo(key,encodedBase64,location.getLongitude(),location.getLatitude(),user.getUid(),animal);
                     repository.save(photo);
 
                     Animal animalObj=new Animal(animal,animal.toLowerCase().contains("dog")? true:false);

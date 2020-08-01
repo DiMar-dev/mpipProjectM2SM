@@ -4,8 +4,9 @@ import android.content.res.Configuration;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.dimar.map2saveme.fragments.DetailsFragment;
+import com.dimar.map2saveme.optionMenu.OptionsMenuActivity;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends OptionsMenuActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
