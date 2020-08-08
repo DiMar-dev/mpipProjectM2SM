@@ -5,6 +5,17 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarLandscape"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <fragment
         android:id="@+id/titles"
         class="com.dimar.map2saveme.fragments.FindListFragment"

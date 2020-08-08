@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#8DAED3</color>
+    <color name="colorPrimaryDark">#195752</color>
+    <color name="colorAccent">#8a0b00</color>
+    <color name="colorAppbar">#005fb4</color>
+    <color name="lime300">#DCE775</color>
+<!--    FFB444  C8341A  1F3440-->
 </resources>

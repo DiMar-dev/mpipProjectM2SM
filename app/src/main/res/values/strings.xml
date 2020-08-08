@@ -10,10 +10,12 @@
 
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
-    <string name="facebook_app_id">1127210577660975</string>
-    <string name="fb_login_protocol_scheme">fb1127210577660975</string>
-    <string name="facebook_application_id">1127210577660975</string>
-    <string name="animalid">AnimalID(must contain type of animal dog or cat)</string>
+    <string name="facebook_app_id" translatable="false">1127210577660975</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb1127210577660975</string>
+    <string name="facebook_application_id" translatable="false">1127210577660975</string>
+    <string name="animalid">AnimalID(must contain type of animal dog or cat) ex. dogSMTH123</string>
+    <string name="infoAdoptHelper">*Do you agree to share your e-mail and phone for contact from an adopter</string>
+    <string name="mainActLabelPhoneNum">Optional-phone number(e.g. +prefixNumber)</string>
 
 
 </resources>

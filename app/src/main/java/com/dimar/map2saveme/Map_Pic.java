@@ -39,7 +39,7 @@ import java.io.ByteArrayOutputStream;
 public class Map_Pic extends AppCompatActivity {
 
     TextView labelPhotograph;
-    EditText photographID;
+    TextView photographID;
     TextView labelAnimal;
     EditText animalID;
     ImageView imageView;
@@ -65,7 +65,7 @@ public class Map_Pic extends AppCompatActivity {
 
         auth=FirebaseAuth.getInstance();
 
-       checkLocationPermission();
+        checkLocationPermission();
 
     }
 
@@ -78,6 +78,7 @@ public class Map_Pic extends AppCompatActivity {
             imageView.setImageBitmap(imageBitmap);
 
             addPhoto=findViewById(R.id.addPhotoBt);
+            addPhoto.setVisibility(View.VISIBLE);
             addPhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -93,25 +94,21 @@ public class Map_Pic extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == MY_PERMISSIONS_REQUEST_LOCATION) {// If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-                    dispatchTakePictureIntent();
+                fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+                dispatchTakePictureIntent();
 
-                } else {
+            } else {
 
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    labelPhotograph.setText("Location not allowed ERROR");
-                    photographID.setText("please allow location for this aplication");
-                    addPhoto.setOnClickListener(null);
+                // permission denied, boo! Disable the
+                // functionality that depends on this permission.
+                labelPhotograph.setText("Location not allowed ERROR");
+                photographID.setText("please allow location for this aplication");
+                addPhoto.setVisibility(View.INVISIBLE);
 
-                }
-                return;
             }
 
         }
@@ -148,9 +145,9 @@ public class Map_Pic extends AppCompatActivity {
                     Photo photo=new Photo(key,encodedBase64,location.getLongitude(),location.getLatitude(),user.getUid(),animal);
                     repository.save(photo);
 
-                    Animal animalObj=new Animal(animal,animal.toLowerCase().contains("dog")? true:false);
-                    repository.save(animalObj);
-                    addPhoto.setOnClickListener(null);
+                    Animal animalObj=new Animal(animal, animal.toLowerCase().contains("dog"));
+                    repository.save(animalObj,photo.getImageID());
+                    addPhoto.setVisibility(View.INVISIBLE);
                 }
 
             }

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.TypedValue;
+import android.view.*;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -13,9 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
@@ -28,6 +26,8 @@ import com.dimar.map2saveme.models.User;
 import com.dimar.map2saveme.repository.Repository;
 import com.dimar.map2saveme.viewModel.FindListViewModel;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -40,9 +40,14 @@ import java.util.Optional;
  */
 public class DetailsFragment extends Fragment {
 
-    private LatLng latLng;
+    LatLng latLng;
     Button startMap;
+    Button adoptInfo;
+    TextView infoTxt;
     Toolbar mytoolbar;
+    Button delete;
+    Repository repository;
+    View rootView;
 
     public DetailsFragment() {
         // Required empty public constructor
@@ -77,9 +82,12 @@ public class DetailsFragment extends Fragment {
             // view hierarchy; it would just never be used.
             return null;
         }
+        repository=new Repository();
 
-         View rootView=inflater.inflate(R.layout.activity_details, container, false);
+        rootView=inflater.inflate(R.layout.activity_details, container, false);
          startMap = rootView.findViewById(R.id.buttonFindMap);
+         adoptInfo=rootView.findViewById(R.id.buttonAdopt);
+         infoTxt=rootView.findViewById(R.id.textViewDetails);
 
         mytoolbar= rootView.findViewById(R.id.toolbar2);
         ((AppCompatActivity)getActivity()).setSupportActionBar(mytoolbar);
@@ -87,6 +95,7 @@ public class DetailsFragment extends Fragment {
 
         return rootView;
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -105,7 +114,6 @@ public class DetailsFragment extends Fragment {
     }
 
     private void findUserCallback(Photo photo,View view){
-        Repository repository=new Repository();
         repository.findUser(new FirebaseCallback() {
             @Override
             public void onCallback(@Nullable User flag) {
@@ -124,29 +132,61 @@ public class DetailsFragment extends Fragment {
     private void updateView(Photo item, View rootView, Optional<User> user) {
 
         if(user.isPresent()){
-            //        rootView.findViewById(R.id.imageViewDetails).
             LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(item.getDate()), ZoneId.systemDefault());
 
-//        String base64Image = base64string.split(",")[1];
             String base64Image=item.getImageBase64();
             byte[] data = Base64.decode(base64Image.getBytes(), Base64.DEFAULT);
 
             String text="Animal name(ID):  "+item.getAndimalID() + "\n" +
-                "Photographer ID:  "+user.get().getName() + "\n" +
+                "Photographer:  "+user.get().getName() + "\n" +
                 "Date: ";
+
+            ((ImageView)rootView.findViewById(R.id.imageViewDetails))
+                    .setImageBitmap(BitmapFactory.decodeByteArray(data,0,data.length));
 
             latLng=new LatLng(item.getLtd(),item.getLng());
             mapClickListener();
 
             String textToShow=text+" "+localDateTime.toString();
-
-            ((ImageView)rootView.findViewById(R.id.imageViewDetails))
-                    .setImageBitmap(BitmapFactory.decodeByteArray(data,0,data.length));
-            ((TextView)rootView.findViewById(R.id.textViewDetails)).setText(textToShow);
+            infoTxt.setText(textToShow);
+            adoptInfoClick(textToShow,item,user.get());
+            deletePhotoClick(item.getImageID(),item.getAndimalID().concat("_").concat(item.getImageID()),user.get());
         }else{
             String text="Not user found as author of the photo";
-            ((TextView)rootView.findViewById(R.id.textViewDetails)).setText(text);
+            infoTxt.setText(text);
         }
+    }
+
+    private void deletePhotoClick(String imageID, String animalID, User user) {
+        String firebaseUserID= FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if (user.getUserId().equals(firebaseUserID) && user.isAdoptHelper()){
+            delete=rootView.findViewById(R.id.deleteBT);
+            delete.setVisibility(View.VISIBLE);
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    repository.removePhotoAndDog(imageID,animalID);
+                }
+            });
+        }
+    }
+
+    private void adoptInfoClick(String text, Photo item,User user) {
+        adoptInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (user.isAdoptHelper()) {
+                    infoTxt.setText(new StringBuilder(text)
+                            .append(System.lineSeparator() + "E-mail:  " + user.getEmail())
+                            .append(System.lineSeparator() + "Phone:  " + user.getPhone())
+                            .toString());
+                } else {
+                    infoTxt.setText(new StringBuilder(text)
+                            .append(System.lineSeparator() + "No adopt helper for this photo")
+                            .toString());
+                }
+            }
+        });
     }
 
     private void mapClickListener() {

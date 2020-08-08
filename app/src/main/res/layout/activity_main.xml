@@ -12,14 +12,26 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
+        <TextView
+            android:id="@+id/labelForPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@+id/phone"
+            android:text="@string/mainActLabelPhoneNum"
+            app:layout_constraintBottom_toTopOf="@+id/phone"
+            app:layout_constraintStart_toStartOf="@+id/phone"
+            android:visibility="invisible"
+            android:textColor="@color/colorAccent"/>
+
         <EditText
             android:id="@+id/phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
-            android:layout_marginTop="304dp"
+            android:layout_marginTop="300dp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:contentDescription="Phone number"
+            android:inputType="phone"
             android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -64,6 +76,20 @@
             android:text="Save info"
             android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phone" />
+
+        <TextView
+            android:id="@+id/textViewInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/infoAdoptHelper"
+            android:visibility="invisible"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.01"
+            app:layout_constraintStart_toEndOf="@+id/isAHChk"
             app:layout_constraintTop_toBottomOf="@+id/phone" />
 
         <include

@@ -92,10 +92,13 @@ public class FindListFragment extends Fragment implements RecyclerViewClickListe
         }
 
         if (dualPane) {
-
+            mytoolbar= getActivity().findViewById(R.id.toolbarLandscape);
+            ((AppCompatActivity)getActivity()).setSupportActionBar(mytoolbar);
+            onCreateOptionsMenu(mytoolbar.getMenu(),getActivity().getMenuInflater());
             showDetails(curCheckPosition);
         }
     }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -107,12 +110,25 @@ public class FindListFragment extends Fragment implements RecyclerViewClickListe
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.appbar_menu,menu);
-        menu.findItem(R.id.menu_item3).setVisible(true);
-        menu.findItem(R.id.menu_item2).setVisible(false);
+        if(dualPane){
+            menu.findItem(R.id.menu_item2).setVisible(true);
+        }else{
+            menu.findItem(R.id.menu_item2).setVisible(false);
+        }
         menu.findItem(R.id.menu_item1).setVisible(false);
+        menu.findItem(R.id.menu_item3).setVisible(true);
+        menu.findItem(R.id.menu_item4).setVisible(false);
 
         SearchView searchView= (SearchView) menu.findItem(R.id.menu_item3).getActionView();
         searchView.setOnQueryTextListener(getOnQueryTextListener());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_item2) {///
+            startActivity(new Intent(getContext(), MainActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private SearchView.OnQueryTextListener getOnQueryTextListener() {

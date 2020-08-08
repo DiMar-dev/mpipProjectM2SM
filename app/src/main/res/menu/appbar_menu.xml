@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/menu_item1"
         android:icon="@drawable/ic_directions_run_black_24dp"
@@ -16,5 +16,9 @@
         android:icon="@drawable/ic_search_black_24dp"
         app:showAsAction="always|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+    <item android:id="@+id/menu_item4"
+        android:title="Delete Account"
+        app:showAsAction="never"
+        app:actionViewClass="androidx.appcompat.widget.ActionMenuView"/>
 
 </menu>

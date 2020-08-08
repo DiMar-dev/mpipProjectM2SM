@@ -1,11 +1,30 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorAppbar</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
     </style>
 
+    <style name="ToolbarStyle" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/colorAppbar</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="FirebaseTheme" parent="FirebaseUI">
+        <!-- Required for sign-in flow styling -->
+        <item name="colorPrimary">@color/colorAppbar</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="colorControlNormal">@color/colorAppbar</item>
+        <item name="colorControlActivated">@color/colorAppbar</item>
+        <item name="colorControlHighlight">@color/lime300</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="colorError">@color/colorAccent</item>
+    </style>
 </resources>

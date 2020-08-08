@@ -11,7 +11,6 @@ import com.google.firebase.database.*;
 public class Repository {
 
     private static DatabaseReference databaseReference=null;
-    private static String photoKey;
 
     public Repository() {
         if(databaseReference==null){
@@ -21,8 +20,8 @@ public class Repository {
     }
 
     // Save and Update...za isto ID se prezapisuva
-    public void save(Animal animal){
-        databaseReference.child("animals").child(animal.getNameId()).setValue(animal);
+    public void save(Animal animal,String key){
+        databaseReference.child("animals").child(animal.getNameId().concat("_").concat(key)).setValue(animal);
     }
     public void save(Photo photo){
         databaseReference.child("photos").child(photo.getImageID()).setValue(photo);
@@ -31,12 +30,21 @@ public class Repository {
         databaseReference.child("users").child(user.getUserId()).setValue(user);
     }
 
+    public void removeUser(String userID){
+        databaseReference.child("users").child(userID).removeValue();
+    }
+
+    public void removePhotoAndDog(String photoID,String animalID) {
+        databaseReference.child("photos").child(photoID).removeValue();
+        databaseReference.child("animals").child(animalID).removeValue();
+    }
+
     public static DatabaseReference getDatabaseReference() {
         return databaseReference;
     }
 
     public static String getPhotoKey() {
-        photoKey=databaseReference.child("photos").push().getKey();
+        String photoKey = databaseReference.child("photos").push().getKey();
         return photoKey;
     }
 
