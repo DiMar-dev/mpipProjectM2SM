@@ -16,6 +16,9 @@
     <string name="animalid">AnimalID(must contain type of animal dog or cat) ex. dogSMTH123</string>
     <string name="infoAdoptHelper">*Do you agree to share your e-mail and phone for contact from an adopter</string>
     <string name="mainActLabelPhoneNum">Optional-phone number(e.g. +prefixNumber)</string>
+    <string name="password">Password</string>
+    <string name="deletePassBt">Delete</string>
+    <string name="cancelDeleteBt">Cancel</string>
 
 
 </resources>

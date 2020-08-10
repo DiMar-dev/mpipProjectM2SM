@@ -4,30 +4,26 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import com.dimar.map2saveme.Login;
 import com.dimar.map2saveme.MainActivity;
 import com.dimar.map2saveme.R;
+import com.dimar.map2saveme.dialog.DeletePasswordDialog;
 import com.dimar.map2saveme.repository.Repository;
 import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.ErrorCodes;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.*;
-import com.google.firebase.provider.FirebaseInitProvider;
 
 import java.util.Objects;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
-public class OptionsMenuActivity extends AppCompatActivity {
+public class OptionsMenuActivity extends AppCompatActivity implements DeletePasswordDialog.NoticeDialogListener {
 
     Logger logger = Logger.getLogger("OptionsMenuActivity");
     private static final String TAG = "OptionsMenuActivity";
@@ -57,7 +53,7 @@ public class OptionsMenuActivity extends AppCompatActivity {
                 logger.info("Clicked menu item: 3");
                 break;
             case R.id.menu_item4:
-                deleteAcc();
+                showNoticeDialog();
                 logger.info("Clicked menu item: 4");
                 break;
         }
@@ -81,23 +77,11 @@ public class OptionsMenuActivity extends AppCompatActivity {
                 });
     }
 
-    private void deleteAcc(){
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+    private void deleteAcc(String userPassword){
+        FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null && !userPassword.isEmpty()) {
             // already signed in
-            String id=FirebaseAuth.getInstance().getCurrentUser().getUid();
-            FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
-            AuthCredential authCredential;
-
-            switch (firebaseUser.getProviderId()){
-
-                case FacebookAuthProvider.PROVIDER_ID:
-                    authCredential=FacebookAuthProvider.getCredential(AccessToken.getCurrentAccessToken().getToken());
-                case EmailAuthProvider.PROVIDER_ID:
-                    authCredential=EmailAuthProvider.getCredential(firebaseUser.getEmail(),"vnesi od std");
-                case GoogleAuthProvider.PROVIDER_ID:
-                    authCredential=GoogleAuthProvider.getCredential(String.valueOf(firebaseUser.getIdToken(true)),AccessToken.getCurrentAccessToken().getToken());
-            }
-
+            logger.info("User provider1:"+ firebaseUser.getProviderId());
 
             AuthUI.getInstance()
                     .delete(this)
@@ -107,18 +91,81 @@ public class OptionsMenuActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Deletion succeeded
                                 Repository repository=new Repository();
-                                repository.removeUser(id);
+                                repository.removeUser(firebaseUser.getUid());
                                 startActivity(new Intent(getApplicationContext(), Login.class));
                                 finish();
                             } else {
                                 // Deletion failed
                                 Log.w(TAG, "signOut:failure", task.getException());
+                                logger.info("User provider2:"+ firebaseUser.getProviderId());
                                 if(((FirebaseAuthException)task.getException()).getErrorCode().equals("ERROR_REQUIRES_RECENT_LOGIN")){
-
+                                    reauthenticateAndDelete(firebaseUser,userPassword);
                                 }
                             }
                         }
                     });
         }
+    }
+
+    public void reauthenticateAndDelete(FirebaseUser firebaseUser,String usrPassword){
+
+        for(UserInfo userInfo : firebaseUser.getProviderData()){
+            logger.info("User provider loop:"+ userInfo.getProviderId());
+        }
+
+        firebaseUser.reauthenticate(getCredential(firebaseUser,usrPassword))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Log.w(TAG, "reauthenticated");
+                deleteAcc(usrPassword);
+            }
+        });
+    }
+
+    //se zema samo prviot od lista provajderi
+    public AuthCredential getCredential(FirebaseUser firebaseUser,String usrPassword){
+        AuthCredential authCredential;
+
+        String providerid=firebaseUser.getProviderData().stream()
+                .filter(userInfo -> !userInfo.getProviderId().equals("firebase"))
+                .collect(Collectors.toList())
+                .get(0)
+                .getProviderId();
+
+        switch (providerid){
+
+            case FacebookAuthProvider.PROVIDER_ID:
+                authCredential=FacebookAuthProvider.getCredential(AccessToken.getCurrentAccessToken().getToken());
+                break;
+            case EmailAuthProvider.PROVIDER_ID:
+                authCredential=EmailAuthProvider.getCredential(firebaseUser.getEmail(),usrPassword);
+                break;
+            case GoogleAuthProvider.PROVIDER_ID:
+                authCredential=GoogleAuthProvider.getCredential(String.valueOf(firebaseUser.getIdToken(true)),AccessToken.getCurrentAccessToken().getToken());
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + firebaseUser.getProviderId());
+        }
+
+        return authCredential;
+    }
+
+    public void showNoticeDialog() {
+        // Create an instance of the dialog fragment and show it
+        DialogFragment dialog = new DeletePasswordDialog();
+        dialog.show(getSupportFragmentManager(), "DeletePasswordDialog");
+    }
+
+    @Override
+    public void onDialogPositiveClick(String  dialog) {
+       String id= dialog.trim();
+       deleteAcc(id);
+
+    }
+
+    @Override
+    public void onDialogNegativeClick(String dialog) {
+        Log.w(TAG, "deleteCanceled");
     }
 }

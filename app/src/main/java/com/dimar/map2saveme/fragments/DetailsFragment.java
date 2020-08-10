@@ -38,6 +38,8 @@ import java.util.Optional;
 /**
  * A simple {@link Fragment} subclass.
  */
+
+//test deletePhotoAnimal
 public class DetailsFragment extends Fragment {
 
     LatLng latLng;
