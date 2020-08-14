@@ -16,15 +16,12 @@ import com.dimar.map2saveme.R;
 
 public class DeletePasswordDialog extends DialogFragment {
 
-    /* The activity that creates an instance of this dialog fragment must
-     * implement this interface in order to receive event callbacks.
-     * Each method passes the DialogFragment in case the host needs to query it. */
+
     public interface NoticeDialogListener {
         public void onDialogPositiveClick(String dialog);
         public void onDialogNegativeClick(String dialog);
     }
 
-    // Use this instance of the interface to deliver action events
     NoticeDialogListener listener;
 
 
@@ -41,8 +38,6 @@ public class DeletePasswordDialog extends DialogFragment {
                 .setPositiveButton(R.string.deletePassBt, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        // sign in the user ...
-                        //TextView pass= view.findViewById(R.id.password);
                         EditText txt=view.findViewById(R.id.passwordDeleteTxt);
                         listener.onDialogPositiveClick(txt.getText().toString());
                         dialog.dismiss();

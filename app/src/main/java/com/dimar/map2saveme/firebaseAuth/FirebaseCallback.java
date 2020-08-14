@@ -4,4 +4,5 @@ import com.dimar.map2saveme.models.User;
 
 public interface FirebaseCallback {
     void onCallback(User flag);
+    void onStatCallback(String num);
 }

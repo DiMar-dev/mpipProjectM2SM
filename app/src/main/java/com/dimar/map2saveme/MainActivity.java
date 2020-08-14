@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+import com.dimar.map2saveme.firebaseAuth.FirebaseCallback;
 import com.dimar.map2saveme.models.User;
 import com.dimar.map2saveme.optionMenu.OptionsMenuActivity;
 import com.dimar.map2saveme.repository.Repository;
@@ -40,6 +41,8 @@ public class MainActivity extends OptionsMenuActivity {
     Button save;
     Toolbar myToolbar;
     List<View> listView;
+    TextView usrCount;
+    TextView photoCount;
     private Repository repository;
 
     private static final String TAG = "SignedInActivity";
@@ -112,8 +115,32 @@ public class MainActivity extends OptionsMenuActivity {
         infoAH=findViewById(R.id.textViewInfo);
         save=findViewById(R.id.saveBt);
         labelPhone=findViewById(R.id.labelForPhone);
+        usrCount=findViewById(R.id.userCount_txt);
+        photoCount=findViewById(R.id.photoCount_txt);
 
         listView= Arrays.asList(phone,isAH,infoAH,save,labelPhone);
+        initStat();
+    }
+
+    private void initStat() {
+        repository.statisticCount(new FirebaseCallback() {
+            @Override
+            public void onCallback(User flag) { }
+
+            @Override
+            public void onStatCallback(String num) {
+                usrCount.setText(usrCount.getText().toString().concat("\n").concat(num));
+            }
+        },"users");
+        repository.statisticCount(new FirebaseCallback() {
+            @Override
+            public void onCallback(User flag) { }
+
+            @Override
+            public void onStatCallback(String num) {
+                photoCount.setText(photoCount.getText().toString().concat("\n").concat(num));
+            }
+        },"photos");
     }
 
     private void clickListen(){

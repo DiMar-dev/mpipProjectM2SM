@@ -109,7 +109,7 @@ public class DetailsFragment extends Fragment {
         LiveData<Photo> photoModel=findListViewModel.getSelected();
         photoModel.observe(getViewLifecycleOwner(), item -> findUserCallback(item,view));
 
-        //koga se uklucuva ova?
+
         if(photo==null && getArguments().getString("object")!=null){
             findUserCallback(stringToobject(),view);
         }
@@ -128,34 +128,41 @@ public class DetailsFragment extends Fragment {
 
                 }
             }
+            @Override
+            public void onStatCallback(String num) {}
         }, photo.getPhotographerID());
     }
-    //user od AUTH treba!!!
+
     private void updateView(Photo item, View rootView, Optional<User> user) {
 
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(item.getDate()), ZoneId.systemDefault());
+
+        String base64Image=item.getImageBase64();
+        byte[] data = Base64.decode(base64Image.getBytes(), Base64.DEFAULT);
+
+        ((ImageView)rootView.findViewById(R.id.imageViewDetails))
+                .setImageBitmap(BitmapFactory.decodeByteArray(data,0,data.length));
+
+        latLng=new LatLng(item.getLtd(),item.getLng());
+        mapClickListener();
+
+        String text="Animal name(ID):  "+item.getAndimalID() + "\n" +
+                "Date: "+localDateTime.toString() + "\n" +
+                "Photographer: ";
+
+        //"Photographer:  "+user.get().getName() + "\n"
         if(user.isPresent()){
-            LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(item.getDate()), ZoneId.systemDefault());
 
-            String base64Image=item.getImageBase64();
-            byte[] data = Base64.decode(base64Image.getBytes(), Base64.DEFAULT);
-
-            String text="Animal name(ID):  "+item.getAndimalID() + "\n" +
-                "Photographer:  "+user.get().getName() + "\n" +
-                "Date: ";
-
-            ((ImageView)rootView.findViewById(R.id.imageViewDetails))
-                    .setImageBitmap(BitmapFactory.decodeByteArray(data,0,data.length));
-
-            latLng=new LatLng(item.getLtd(),item.getLng());
-            mapClickListener();
-
-            String textToShow=text+" "+localDateTime.toString();
+            String textToShow=text.concat(user.get().getName());
             infoTxt.setText(textToShow);
+
             adoptInfoClick(textToShow,item,user.get());
             deletePhotoClick(item.getImageID(),item.getAndimalID().concat("_").concat(item.getImageID()),user.get());
         }else{
-            String text="Not user found as author of the photo";
-            infoTxt.setText(text);
+
+            String userText="Not user found \n as author of the photo";
+            String textNoUser=text.concat(userText);
+            infoTxt.setText(textNoUser);
         }
     }
 

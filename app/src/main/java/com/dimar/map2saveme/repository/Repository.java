@@ -66,4 +66,22 @@ public class Repository {
 
         });
     }
+
+    public void statisticCount(FirebaseCallback firebaseCallback,String statValue){
+        databaseReference.child(statValue).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    firebaseCallback.onStatCallback(String.valueOf(dataSnapshot.getChildrenCount()));
+                }else{
+                    firebaseCallback.onStatCallback("");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+
+        });
+    }
 }

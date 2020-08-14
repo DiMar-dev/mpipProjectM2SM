@@ -81,7 +81,6 @@ public class OptionsMenuActivity extends AppCompatActivity implements DeletePass
         FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser != null && !userPassword.isEmpty()) {
             // already signed in
-            logger.info("User provider1:"+ firebaseUser.getProviderId());
 
             AuthUI.getInstance()
                     .delete(this)
@@ -97,7 +96,6 @@ public class OptionsMenuActivity extends AppCompatActivity implements DeletePass
                             } else {
                                 // Deletion failed
                                 Log.w(TAG, "signOut:failure", task.getException());
-                                logger.info("User provider2:"+ firebaseUser.getProviderId());
                                 if(((FirebaseAuthException)task.getException()).getErrorCode().equals("ERROR_REQUIRES_RECENT_LOGIN")){
                                     reauthenticateAndDelete(firebaseUser,userPassword);
                                 }

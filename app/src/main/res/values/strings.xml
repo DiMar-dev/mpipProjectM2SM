@@ -19,6 +19,8 @@
     <string name="password">Password</string>
     <string name="deletePassBt">Delete</string>
     <string name="cancelDeleteBt">Cancel</string>
+    <string name="statUsrCount">Users mapping cats and dogs:</string>
+    <string name="statPhotoCount">Number of photos on the app:</string>
 
 
 </resources>

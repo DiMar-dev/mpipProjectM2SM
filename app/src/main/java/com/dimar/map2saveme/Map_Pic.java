@@ -33,9 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
 
-//request for permision proba detalna so fail UI/UX resenie
-// posle submit redirect na findlist
-//user se seam od firebase a na po baza
+
 public class Map_Pic extends AppCompatActivity {
 
     TextView labelPhotograph;

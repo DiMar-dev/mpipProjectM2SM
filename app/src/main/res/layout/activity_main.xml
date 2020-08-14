@@ -93,7 +93,32 @@
             app:layout_constraintTop_toBottomOf="@+id/phone" />
 
         <include
-            layout="@layout/toolbar_layout"/>
+            android:id="@+id/include"
+            layout="@layout/toolbar_layout" />
+
+        <TextView
+            android:id="@+id/userCount_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="44dp"
+            android:text="@string/statUsrCount"
+            android:textSize="20dp"
+            android:textColor="@color/darkBlue"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include" />
+
+        <TextView
+            android:id="@+id/photoCount_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="36dp"
+            android:text="@string/statPhotoCount"
+            android:textSize="20dp"
+            android:textColor="@color/darkBlue"
+            app:layout_constraintStart_toStartOf="@id/userCount_txt"
+            app:layout_constraintTop_toBottomOf="@id/userCount_txt" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
